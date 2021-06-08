@@ -81,6 +81,18 @@ pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
 /// # Panics
 ///
 /// This method panics if `p` is either null or not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let mut x = 3;
+/// let p = &mut x as *mut i32;
+/// let r = unsafe { ptr::as_mut(p) };
+/// *r = 4;
+/// assert_eq!(x, 4);
+/// ```
 pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
     // SAFETY: The caller must uphold the all safety notes.
     unsafe { try_as_mut(p).expect(ERR_MSG) }
