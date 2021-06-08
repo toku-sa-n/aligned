@@ -54,10 +54,10 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 /// let p = Box::into_raw(b);
 /// assert_eq!(unsafe { ptr::try_get(p) }, Ok(3));
 ///
-/// let p: *const u32 = core::ptr::null();
+/// let p: *const i32 = core::ptr::null();
 /// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::Null));
 ///
-/// let p = 0x1001 as *const u32;
+/// let p = 0x1001 as *const i32;
 /// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
