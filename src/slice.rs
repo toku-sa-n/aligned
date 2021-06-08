@@ -10,6 +10,17 @@ use crate::ERR_MSG;
 ///
 /// The caller must follow the rules required by [`core::slice::from_raw_parts_mut`] except the
 /// alignment and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::slice;
+///
+/// let mut x = 3;
+/// let s = unsafe { slice::from_raw_parts_mut(&mut x, 1) };
+///
+/// assert_eq!(s, [3]);
+/// ```
 pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T] {
     // SAFETY: The caller must uphold the all safety rules.
     let r = unsafe { try_from_raw_parts_mut(data, len) };
