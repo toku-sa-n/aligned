@@ -43,6 +43,23 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let b = Box::new(3);
+/// let p = Box::into_raw(b);
+/// assert_eq!(unsafe { ptr::try_get(p) }, Ok(3));
+///
+/// let p: *const u32 = core::ptr::null();
+/// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::Null));
+///
+/// let p = 0x1001 as *const u32;
+/// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::NotAligned));
+/// ```
 pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
     if p.is_null() {
         Err(Error::Null)
