@@ -187,6 +187,31 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let x = 3;
+/// let p = &x as *const i32;
+/// let r = unsafe { ptr::try_as_ref(p) };
+///
+/// if let Ok(r) = r {
+///     assert_eq!(*r, 3);
+/// } else {
+///     unreachable!();
+/// }
+///
+/// let p: *const i32 = core::ptr::null();
+/// let r = unsafe { ptr::try_as_ref(p) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let mut p = 0x1001 as *const i32;
+/// let r = unsafe { ptr::try_as_ref(p) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
 pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
     if p.is_null() {
         Err(Error::Null)
