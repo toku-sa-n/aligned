@@ -1,3 +1,5 @@
+//! A module containing functions defined in [`core::ptr`] with null and alignment checks.
+
 use crate::is_aligned;
 use crate::Error;
 use crate::ERR_MSG;
@@ -6,13 +8,8 @@ use crate::ERR_MSG;
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment and null
+/// rules.
 ///
 /// # Panics
 ///
@@ -26,13 +23,8 @@ pub unsafe fn read<T>(p: *const T) -> T {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment
+/// and null rules.
 ///
 /// # Errors
 ///
@@ -55,7 +47,8 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
 ///
 /// # Safety
 ///
-/// The pointer `p` must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
+/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
+/// and null rules.
 ///
 /// # Panics
 ///
@@ -69,7 +62,8 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 ///
 /// # Safety
 ///
-/// The pointer `p`  must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
+/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
+/// and null rules.
 ///
 /// # Errors
 ///
@@ -92,13 +86,8 @@ pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Panics
 ///
@@ -112,13 +101,8 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Errors
 ///
@@ -141,13 +125,8 @@ pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Panics
 ///
@@ -161,13 +140,8 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references, or multiple mutable references to the same object.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Errors
 ///
@@ -190,13 +164,8 @@ pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references to the same object simultaneously.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Panics
 ///
@@ -210,13 +179,8 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 ///
 /// # Safety
 ///
-/// The pointer `p` must follow these rules:
-///
-/// - It must be dereferencable as defined in [Rust's documentation](https://doc.rust-lang.org/std/ptr/index.html#safety).
-/// - It must point to the initialized instance of T.
-///
-/// Also, the caller must follow Rust's aliasing rule. The caller must not create both immutable
-/// and mutable references to the same object simultaneously.
+/// The caller must follow the safety rules listed at [`core::ptr`] except the alignment and null
+/// rules.
 ///
 /// # Errors
 ///
