@@ -233,6 +233,17 @@ pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
 /// # Panics
 ///
 /// This method panics if `p` is either null or not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let x = 3;
+/// let p = &x as *const _;
+///
+/// assert_eq!(unsafe { ptr::read(p) }, 3);
+/// ```
 pub unsafe fn read<T>(p: *const T) -> T {
     // SAFETY: The caller must uphold the all safety rules.
     unsafe { try_read(p).expect(ERR_MSG) }
