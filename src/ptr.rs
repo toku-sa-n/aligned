@@ -14,6 +14,17 @@ use crate::ERR_MSG;
 /// # Panics
 ///
 /// This method panics if `p` is either null or not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let b = Box::new(3);
+/// let p = Box::into_raw(b);
+///
+/// unsafe { assert_eq!(ptr::get(p), 3); }
+/// ```
 pub unsafe fn get<T: Copy>(p: *const T) -> T {
     // SAFETY: The caller must uphold the all safety rules.
     unsafe { try_get(p).expect(ERR_MSG) }
