@@ -258,6 +258,24 @@ pub unsafe fn read<T>(p: *const T) -> T {
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let x = 3;
+/// let p = &x as *const _;
+///
+/// assert_eq!(unsafe { ptr::try_read(p) }, Ok(3));
+///
+/// let p: *const i32 = core::ptr::null();
+/// assert_eq!(unsafe { ptr::try_read(p) }, Err(Error::Null));
+///
+/// let p = 0x1001 as *const i32;
+/// assert_eq!(unsafe { ptr::try_read(p) }, Err(Error::NotAligned));
+/// ```
 pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
     if p.is_null() {
         Err(Error::Null)
