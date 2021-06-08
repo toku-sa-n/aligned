@@ -329,6 +329,28 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let p = &mut x as *mut i32;
+///
+/// let r = unsafe { ptr::try_write(p, 4) };
+/// assert!(r.is_ok());
+/// assert_eq!(x, 4);
+///
+/// let p: *mut i32 = core::ptr::null_mut();
+/// let r = unsafe { ptr::try_write(p, 4) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let p = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_write(p, 4) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
 pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
     if p.is_null() {
         Err(Error::Null)
