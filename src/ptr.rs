@@ -158,6 +158,17 @@ pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
 /// # Panics
 ///
 /// This method panics if `p` is either null or not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let x = 3;
+/// let p = &x as *const i32;
+/// let r = unsafe { ptr::as_ref(p) };
+/// assert_eq!(*r, 3);
+/// ```
 pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
     // SAFETY: The caller must uphold the all safety rules.
     unsafe { try_as_ref(p).expect(ERR_MSG) }
