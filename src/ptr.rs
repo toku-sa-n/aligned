@@ -23,7 +23,7 @@ use crate::ERR_MSG;
 /// let b = Box::new(3);
 /// let p = Box::into_raw(b);
 ///
-/// unsafe { assert_eq!(ptr::get(p), 3); }
+/// assert_eq!(unsafe { ptr::get(p) }, 3);
 /// ```
 pub unsafe fn get<T: Copy>(p: *const T) -> T {
     // SAFETY: The caller must uphold the all safety rules.
