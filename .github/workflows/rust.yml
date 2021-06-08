@@ -35,7 +35,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: -- -D clippy::pedantic -D clippy::all
 
-
   build:
 
     runs-on: ubuntu-latest
