@@ -297,6 +297,20 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
 /// # Panics
 ///
 /// This method panics if `p` is either null or not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let p = &mut x as *mut i32;
+///
+/// unsafe { ptr::write(p, 4) };
+///
+/// assert_eq!(x, 4);
+/// ```
 pub unsafe fn write<T>(p: *mut T, v: T) {
     // SAFETY: The caller must uphold the all safety rules.
     unsafe { try_write(p, v).expect(ERR_MSG) }
