@@ -111,6 +111,32 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let p = &mut x as *mut i32;
+/// let r = unsafe { ptr::try_as_mut(p) };
+///
+/// if let Ok(r) = r {
+///     *r = 4;
+///     assert_eq!(x, 4);
+/// } else {
+///     unreachable!();
+/// }
+///
+/// let mut p: *mut i32 = core::ptr::null_mut();
+/// let r = unsafe { ptr::try_as_mut(p) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let mut p = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_as_mut(p) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
 pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
     if p.is_null() {
         Err(Error::Null)
