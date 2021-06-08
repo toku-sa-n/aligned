@@ -4,84 +4,6 @@ use crate::is_aligned;
 use crate::Error;
 use crate::ERR_MSG;
 
-/// Reads a value the pointer `p` points with [`core::ptr::read`].
-///
-/// # Safety
-///
-/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment and null
-/// rules.
-///
-/// # Panics
-///
-/// This method panics if `p` is either null or not aligned correctly.
-pub unsafe fn read<T>(p: *const T) -> T {
-    // SAFETY: The caller must uphold the all safety rules.
-    unsafe { try_read(p).expect(ERR_MSG) }
-}
-
-/// Reads a value the pointer `p` points with [`core::ptr::read`].
-///
-/// # Safety
-///
-/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment
-/// and null rules.
-///
-/// # Errors
-///
-/// This method may return an error:
-///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
-pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { p.read() })
-    } else {
-        Err(Error::NotAligned)
-    }
-}
-
-/// Writes a value the pointer `p` points with [`core::ptr::write`].
-///
-/// # Safety
-///
-/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
-/// and null rules.
-///
-/// # Panics
-///
-/// This method panics if `p` is either null or not aligned correctly.
-pub unsafe fn write<T>(p: *mut T, v: T) {
-    // SAFETY: The caller must uphold the all safety rules.
-    unsafe { try_write(p, v).expect(ERR_MSG) }
-}
-
-/// Writes a value the pointer `p` points with [`core::ptr::write`].
-///
-/// # Safety
-///
-/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
-/// and null rules.
-///
-/// # Errors
-///
-/// This method may return an error:
-///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
-pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        unsafe { p.write(v) };
-        Ok(())
-    } else {
-        Err(Error::NotAligned)
-    }
-}
 /// Gets a value the pointer `p` points by dereferencing it.
 ///
 /// # Safety
@@ -194,6 +116,85 @@ pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
     } else if is_aligned(p) {
         // SAFETY: The caller must uphold the all safety rules.
         Ok(unsafe { &*p })
+    } else {
+        Err(Error::NotAligned)
+    }
+}
+
+/// Reads a value the pointer `p` points with [`core::ptr::read`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment and null
+/// rules.
+///
+/// # Panics
+///
+/// This method panics if `p` is either null or not aligned correctly.
+pub unsafe fn read<T>(p: *const T) -> T {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_read(p).expect(ERR_MSG) }
+}
+
+/// Reads a value the pointer `p` points with [`core::ptr::read`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::read`] except the alignment
+/// and null rules.
+///
+/// # Errors
+///
+/// This method may return an error:
+///
+/// - [`Error::Null`] - `p` is null.
+/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
+    if p.is_null() {
+        Err(Error::Null)
+    } else if is_aligned(p) {
+        // SAFETY: The caller must uphold the all safety rules.
+        Ok(unsafe { p.read() })
+    } else {
+        Err(Error::NotAligned)
+    }
+}
+
+/// Writes a value the pointer `p` points with [`core::ptr::write`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
+/// and null rules.
+///
+/// # Panics
+///
+/// This method panics if `p` is either null or not aligned correctly.
+pub unsafe fn write<T>(p: *mut T, v: T) {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_write(p, v).expect(ERR_MSG) }
+}
+
+/// Writes a value the pointer `p` points with [`core::ptr::write`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::write`] except the alignment
+/// and null rules.
+///
+/// # Errors
+///
+/// This method may return an error:
+///
+/// - [`Error::Null`] - `p` is null.
+/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
+    if p.is_null() {
+        Err(Error::Null)
+    } else if is_aligned(p) {
+        // SAFETY: The caller must uphold the all safety rules.
+        unsafe { p.write(v) };
+        Ok(())
     } else {
         Err(Error::NotAligned)
     }
