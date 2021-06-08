@@ -198,11 +198,7 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 /// let p = &x as *const i32;
 /// let r = unsafe { ptr::try_as_ref(p) };
 ///
-/// if let Ok(r) = r {
-///     assert_eq!(*r, 3);
-/// } else {
-///     unreachable!();
-/// }
+/// assert_eq!(r, Ok(&3));
 ///
 /// let p: *const i32 = core::ptr::null();
 /// let r = unsafe { ptr::try_as_ref(p) };
