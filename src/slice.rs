@@ -1,6 +1,6 @@
 //! A module containing functions defined in [`core::slice`] with null and alignment checks.
 
-use crate::is_aligned;
+use crate::return_error_on_null_or_misaligned;
 use crate::Error;
 use crate::ERR_MSG;
 
@@ -67,12 +67,8 @@ pub unsafe fn try_from_raw_parts_mut<'a, T>(
     data: *mut T,
     len: usize,
 ) -> Result<&'a mut [T], Error> {
-    if data.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(data) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { core::slice::from_raw_parts_mut(data, len) })
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(data)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    Ok(unsafe { core::slice::from_raw_parts_mut(data, len) })
 }

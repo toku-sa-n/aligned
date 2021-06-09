@@ -14,6 +14,16 @@ pub type Result<T> = core::result::Result<T, Error>;
 
 const ERR_MSG: &str = "Pointer is either null or not aligned.";
 
+fn return_error_on_null_or_misaligned<T>(p: *const T) -> Result<()> {
+    if p.is_null() {
+        Err(Error::Null)
+    } else if is_aligned(p) {
+        Ok(())
+    } else {
+        Err(Error::NotAligned)
+    }
+}
+
 fn is_aligned<T>(p: *const T) -> bool {
     p as usize % core::mem::align_of::<T>() == 0
 }
