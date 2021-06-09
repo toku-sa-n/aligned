@@ -501,6 +501,32 @@ pub unsafe fn try_copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usiz
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::drop_in_place`] which panics if the passed pointer is null or not
+/// aligned.
+///
+/// Note that the original function accepts types which are not [`Sized`]. However, this function
+/// only accepts types which are [`Sized`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::drop_in_place`] except the
+/// alignment and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let b = Box::new(3);
+/// let p = Box::into_raw(b);
+/// unsafe { ptr::drop_in_place(p) };
+/// ```
+pub unsafe fn drop_in_place<T>(to_drop: *mut T) {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_drop_in_place(to_drop).expect(ERR_MSG) }
+}
+
 /// The wraper of [`core::ptr::drop_in_place`] which returns an error if the passed pointer is null
 /// or not aligned.
 ///
