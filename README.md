@@ -6,8 +6,6 @@ This library contains unsafe functions defined in `core::ptr` and `core::slice` 
 
 This crate is intended to prevent from dereferencing to the unaligned address. For example the below code example panics because `p` points to an unaligned address. If we import `core::ptr` instead of `aligned::ptr`, this code may run successfully. However, reading a value from unaligned pointer causes *undefined behaviors* (except `read_unaligned`).
 
-This crate supports the `no_std` environment.
-
 ```rust
 use aligned::ptr;
 
@@ -18,6 +16,8 @@ fn main() {
     unsafe { ptr::read(p) };
 }
 ```
+
+This crate supports the `no_std` environment.
 
 ## License
 
