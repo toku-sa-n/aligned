@@ -5,7 +5,7 @@
 //!
 //! For example, the code below panics because `p` is not aligned correctly.//!
 //!
-//! ```rust
+//! ```rust,should_panic
 //! use aligned::ptr;
 //!
 //! let x = 0xdead_beaf_u32;
