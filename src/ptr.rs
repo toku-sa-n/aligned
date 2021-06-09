@@ -408,7 +408,7 @@ pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<()> {
     Ok(())
 }
 
-/// The wrapper of [`core::ptr::write_bytes`] which panics if the passed pointer is null or not
+/// The wrapper of [`core::ptr::write_bytes`] which returns an error if the passed pointer is null or not
 /// aligned.
 ///
 /// # Safety
