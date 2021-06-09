@@ -4,7 +4,7 @@ A Rust library that ensures a pointer is aligned correctly before dereferencing 
 
 This library contains unsafe functions defined in `core::ptr` and `core::slice` (except `read_unaligned` and `write_unaligned`). All functions defined in this crate check whether the passed pointers are aligned correctly and not null.
 
-For example the below code example panics because `p` points to an unaligned address. If we import `core::ptr` instead of `aligned::ptr`, this code may run successfully. However, reading a value from unaligned pointer causes *undefined behavior* (except `read_unaligned`).
+This crate is intended to prevent from dereferencing to the unaligned address. For example the below code example panics because `p` points to an unaligned address. If we import `core::ptr` instead of `aligned::ptr`, this code may run successfully. However, reading a value from unaligned pointer causes *undefined behavior* (except `read_unaligned`).
 
 ```rust
 use aligned::ptr;
