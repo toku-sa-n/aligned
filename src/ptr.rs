@@ -1,7 +1,7 @@
 //! A module containing functions defined in [`core::ptr`] with null and alignment checks.
 
 use crate::return_error_on_null_or_misaligned;
-use crate::Error;
+use crate::Result;
 use crate::ERR_MSG;
 
 /// The wrapper of `*p` which panics if `p` is either null or not aligned.
@@ -60,7 +60,7 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 /// let p = 0x1001 as *const i32;
 /// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
+pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T> {
     return_error_on_null_or_misaligned(p)?;
 
     // SAFETY: The caller must uphold the all safety rules.
@@ -133,7 +133,7 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 /// let r = unsafe { ptr::try_as_mut(p) };
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
+pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T> {
     return_error_on_null_or_misaligned(p)?;
 
     // SAFETY: The caller must uphold the all safety rules.
@@ -200,7 +200,7 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 /// let r = unsafe { ptr::try_as_ref(p) };
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
+pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T> {
     return_error_on_null_or_misaligned(p)?;
 
     // SAFETY: The caller must uphold the all safety rules.
@@ -266,7 +266,7 @@ pub unsafe fn read<T>(p: *const T) -> T {
 /// let p = 0x1001 as *const i32;
 /// assert_eq!(unsafe { ptr::try_read(p) }, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
+pub unsafe fn try_read<T>(p: *const T) -> Result<T> {
     return_error_on_null_or_misaligned(p)?;
 
     Ok(unsafe { p.read() })
@@ -338,7 +338,7 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 /// let r = unsafe { ptr::try_write(p, 4) };
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
+pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<()> {
     return_error_on_null_or_misaligned(p)?;
 
     // SAFETY: The caller must uphold the all safety rules.
@@ -414,7 +414,7 @@ pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
 /// let r = unsafe { ptr::try_copy(src, dst, 1) };
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
-pub unsafe fn try_copy<T>(src: *const T, dst: *mut T, count: usize) -> Result<(), Error> {
+pub unsafe fn try_copy<T>(src: *const T, dst: *mut T, count: usize) -> Result<()> {
     return_error_on_null_or_misaligned(src)?;
     return_error_on_null_or_misaligned(dst)?;
 
