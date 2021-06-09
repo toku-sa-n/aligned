@@ -772,6 +772,31 @@ pub unsafe fn try_swap<T>(x: *mut T, y: *mut T) -> Result<()> {
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::swap_nonoverlapping`] which panics unless the passed pointers are
+/// aligned and not null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::swap_nonoverlapping`] except
+/// the alignment and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let mut x = [1, 2, 3];
+/// let mut y = [4, 5, 6];
+///
+/// unsafe { ptr::swap_nonoverlapping(x.as_mut_ptr(), y.as_mut_ptr(), 3) };
+/// assert_eq!(x, [4, 5, 6]);
+/// assert_eq!(y, [1, 2, 3]);
+/// ```
+pub unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_swap_nonoverlapping(x, y, count).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::swap_nonoverlapping`] which returns an error unless the passed
 /// pointers are aligned and not null.
 ///
