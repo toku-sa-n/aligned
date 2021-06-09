@@ -526,6 +526,7 @@ pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
 ///
 /// let r = unsafe { ptr::try_write_volatile(&mut x, 3) };
 /// assert!(r.is_ok());
+/// assert_eq!(x, 3);
 ///
 /// let p: *mut i32 = core::ptr::null_mut();
 /// let r = unsafe { ptr::try_write_volatile(p, 3) };
