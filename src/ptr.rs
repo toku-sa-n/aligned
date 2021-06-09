@@ -702,3 +702,72 @@ pub unsafe fn try_replace<T>(dst: *mut T, src: T) -> Result<T> {
     // SAFETY: The caller must uphold the safety rules.
     Ok(unsafe { core::ptr::replace(dst, src) })
 }
+
+/// The wrapper of [`core::ptr::swap`] which panics unless the passed pointers are aligned and not
+/// null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let mut y = 4;
+/// unsafe { ptr::swap(&mut x, &mut y) };
+/// assert_eq!(x, 4);
+/// assert_eq!(y, 3);
+/// ```
+pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_swap(x, y).expect(ERR_MSG) }
+}
+
+/// The wrapper of [`core::ptr::swap`] which returns an error unless the passed pointers are
+/// aligned and not null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`Error::Null`] - Either `x` or `y` is null.
+/// - [`Error::NotAligned`] - Either `x` or `y` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let mut y = 4;
+/// let r = unsafe { ptr::try_swap(&mut x, &mut y) };
+/// assert!(r.is_ok());
+/// assert_eq!(x, 4);
+/// assert_eq!(y, 3);
+///
+/// let r = unsafe { ptr::try_swap(&mut x, core::ptr::null_mut()) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let z = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_swap(&mut x, z) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_swap<T>(x: *mut T, y: *mut T) -> Result<()> {
+    return_error_on_null_or_misaligned(x)?;
+    return_error_on_null_or_misaligned(y)?;
+
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { core::ptr::swap(x, y) };
+    Ok(())
+}
