@@ -41,8 +41,8 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -105,8 +105,8 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -177,8 +177,8 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -246,8 +246,8 @@ pub unsafe fn read<T>(p: *const T) -> T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -307,8 +307,8 @@ pub unsafe fn read_volatile<T>(p: *const T) -> T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -376,8 +376,8 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -448,8 +448,8 @@ pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - Either `src` or `dst` is null.
-/// - [`Error::NotAligned`] - Either `src` or `dst` is not aligned correctly.
+/// - [`crate::Error::Null`] - Either `src` or `dst` is null.
+/// - [`crate::Error::NotAligned`] - Either `src` or `dst` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -525,8 +525,8 @@ pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - Either `src` or `dst` is null.
-/// - [`Error::NotAligned`] - Either `src` or `dst` is not aligned.
+/// - [`crate::Error::Null`] - Either `src` or `dst` is null.
+/// - [`crate::Error::NotAligned`] - Either `src` or `dst` is not aligned.
 ///
 /// # Examples
 ///
@@ -604,8 +604,8 @@ pub unsafe fn drop_in_place<T>(to_drop: *mut T) {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `to_drop` is null.
-/// - [`Error::NotAligned`] - `to_drop` is not aligned.
+/// - [`crate::Error::Null`] - `to_drop` is null.
+/// - [`crate::Error::NotAligned`] - `to_drop` is not aligned.
 ///
 /// # Examples
 ///
@@ -671,8 +671,8 @@ pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `dst` is null.
-/// - [`Error::NotAligned`] - `dst` is not aligned correctly.
+/// - [`crate::Error::Null`] - `dst` is null.
+/// - [`crate::Error::NotAligned`] - `dst` is not aligned correctly.
 ///
 /// # Examples
 ///
@@ -740,8 +740,8 @@ pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - Either `x` or `y` is null.
-/// - [`Error::NotAligned`] - Either `x` or `y` is not aligned correctly.
+/// - [`crate::Error::Null`] - Either `x` or `y` is null.
+/// - [`crate::Error::NotAligned`] - Either `x` or `y` is not aligned correctly.
 ///
 /// # Examples
 ///
