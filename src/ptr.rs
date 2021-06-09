@@ -634,6 +634,31 @@ pub unsafe fn try_drop_in_place<T>(to_drop: *mut T) -> Result<()> {
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::replace`] which panics if the passed pointer is either null or not
+/// aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+///
+/// let r = unsafe { ptr::replace(&mut x, 4) };
+/// assert_eq!(x, 4);
+/// assert_eq!(r, 3);
+/// ```
+pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_replace(dst, src).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::replace`] which returns an error if the passed pointer is
 /// null or not aligned.
 ///
