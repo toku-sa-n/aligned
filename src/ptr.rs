@@ -500,3 +500,48 @@ pub unsafe fn try_copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usiz
 
     Ok(())
 }
+
+/// The wraper of [`core::ptr::drop_in_place`] which returns an error if the passed pointer is null
+/// or not aligned.
+///
+/// Note that the original function accepts types which are not [`Sized`]. However, this function
+/// only accepts types which are [`Sized`].
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::drop_in_place`] except the
+/// alignment and null rules.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`Error::Null`] - `to_drop` is null.
+/// - [`Error::NotAligned`] - `to_drop` is not aligned.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let b = Box::new(3);
+/// let p = Box::into_raw(b);
+/// let r = unsafe { ptr::try_drop_in_place(p) };
+/// assert!(r.is_ok());
+///
+/// let p: *mut i32 = core::ptr::null_mut();
+/// let r = unsafe { ptr::try_drop_in_place(p) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let p = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_drop_in_place(p) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_drop_in_place<T>(to_drop: *mut T) -> Result<()> {
+    return_error_on_null_or_misaligned(to_drop)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { core::ptr::drop_in_place(to_drop) };
+    Ok(())
+}
