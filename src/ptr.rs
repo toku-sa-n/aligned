@@ -272,6 +272,29 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T> {
     Ok(unsafe { p.read() })
 }
 
+/// The wrapper of [`core::ptr::read_volatile`] which panics if the passed pointer is either null
+/// or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::read_volatile`] except the
+/// alignment and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let x = 3;
+/// let p = &x as *const _;
+///
+/// assert_eq!(unsafe { ptr::read_volatile(p) }, 3);
+/// ```
+pub unsafe fn read_volatile<T>(p: *const T) -> T {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_read_volatile(p).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::read_volatile`] which returns an error if the passed pointer is
 /// either null or not aligned.
 ///
