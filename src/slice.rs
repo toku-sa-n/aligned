@@ -69,3 +69,69 @@ pub unsafe fn try_from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> Result<
     // SAFETY: The caller must uphold the all safety rules.
     Ok(unsafe { core::slice::from_raw_parts_mut(data, len) })
 }
+
+/// The wrapper of [`core::slice::from_raw_parts`] which panics if the passed pointer is either
+/// null or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety requirements of [`core::slice::from_raw_parts`] except the
+/// alignment and null requirements.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::slice;
+/// use aligned::Error;
+///
+/// let x = 3;
+/// let s = unsafe { slice::from_raw_parts(&x, 1) };
+///
+/// assert_eq!(s, [3]);
+/// ```
+pub unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_from_raw_parts(data, len).expect(ERR_MSG) }
+}
+
+/// The wrapper of [`core::slice::from_raw_parts`] which may return an error if the passed pointer
+/// is either null or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::slice::from_raw_parts`] except the
+/// alignment and null requirements.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`crate::Error::Null`] - `data` is null.
+/// - [`crate::Error::NotAligned`] - `data` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::slice;
+/// use aligned::Error;
+///
+/// let x = 3;
+/// let s = unsafe { slice::try_from_raw_parts(&x, 1) };
+///
+/// assert!(s.is_ok());
+/// assert_eq!(s.unwrap(), [3]);
+///
+/// let p: *const i32 = core::ptr::null();
+/// let s = unsafe { slice::try_from_raw_parts(p, 1) };
+/// assert_eq!(s, Err(Error::Null));
+///
+/// let p = 0x1001 as *const i32;
+/// let s = unsafe { slice::try_from_raw_parts(p, 1) };
+/// assert_eq!(s, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_from_raw_parts<'a, T>(data: *const T, len: usize) -> Result<&'a [T]> {
+    return_error_on_null_or_misaligned(data)?;
+
+    // SAFETY: The caller must uphold the safety requirements.
+    Ok(unsafe { core::slice::from_raw_parts(data, len) })
+}
