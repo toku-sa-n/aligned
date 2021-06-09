@@ -3,7 +3,7 @@
 //! This crate contains wrappers of unsafe functions defined in [`core::ptr`] and [`core::slice`].
 //! These wrappers panic or return errors if the passed pointers are null or not aligned correctly.
 //!
-//! For example, the code below panics because `p` is not aligned correctly.//!
+//! For example, the code below panics because `p` is not aligned correctly.
 //!
 //! ```rust,should_panic
 //! use aligned::ptr;
