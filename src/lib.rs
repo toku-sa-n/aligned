@@ -15,7 +15,7 @@
 //! ```
 //!
 //! If we import [`core::ptr`] instead of [`ptr`], the code may run successfully.
-//! However, dereferencing unaligned pointer causes *undefined behavior* and must be avoided
+//! However, dereferencing unaligned pointer causes *undefined behaviors* and must be avoided
 //! by all means (except [`core::ptr::read_unaligned`] and [`core::ptr::write_unaligned`]).
 //!
 //! # Safety
