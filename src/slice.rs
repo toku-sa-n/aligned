@@ -40,8 +40,8 @@ pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T]
 ///
 /// This function may return an error:
 ///
-/// - [`Error::Null`] - `p` is null.
-/// - [`Error::NotAligned`] - `p` is not aligned correctly.
+/// - [`crate::Error::Null`] - `p` is null.
+/// - [`crate::Error::NotAligned`] - `p` is not aligned correctly.
 ///
 /// # Examples
 ///
