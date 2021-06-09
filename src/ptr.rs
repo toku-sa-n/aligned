@@ -476,6 +476,49 @@ pub unsafe fn try_write_bytes<T>(dst: *mut T, val: u8, count: usize) -> Result<(
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::write_volatile`] which returns an error if the passed pointer is
+/// either null or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::write_volatile`] except the
+/// alignment and null requirements.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`crate::Error::Null`] - `dst` is null.
+/// - [`crate::Error::NotAligned`] - `dst` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 0;
+///
+/// let r = unsafe { ptr::try_write_volatile(&mut x, 3) };
+/// assert!(r.is_ok());
+///
+/// let p: *mut i32 = core::ptr::null_mut();
+/// let r = unsafe { ptr::try_write_volatile(p, 3) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let p = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_write_volatile(p, 3) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_write_volatile<T>(dst: *mut T, src: T) -> Result<()> {
+    return_error_on_null_or_misaligned(dst)?;
+
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { dst.write_volatile(src) };
+
+    Ok(())
+}
+
 /// The wrapper of [`core::ptr::copy`] which panics unless the passed pointers are aligned and not
 /// null.
 ///
