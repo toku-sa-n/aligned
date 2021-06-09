@@ -423,6 +423,34 @@ pub unsafe fn try_copy<T>(src: *const T, dst: *mut T, count: usize) -> Result<()
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::copy_nonoverlapping`] which panics unless the passed pointers are aligned and not
+/// null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::copy_nonoverlapping`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use core::mem::MaybeUninit;
+///
+/// let x = 3;
+/// let src = &x as *const i32;
+/// let mut y = MaybeUninit::uninit();
+/// let dst = y.as_mut_ptr();
+///
+/// unsafe { ptr::copy_nonoverlapping(src, dst, 1) };
+/// let y = unsafe { y.assume_init() };
+/// assert_eq!(y, 3);
+/// ```
+pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_copy_nonoverlapping(src, dst, count).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::copy_nonoverlapping`] which returns an error unless the passed
 /// pointers are aligned and not null.
 ///
