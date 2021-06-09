@@ -70,6 +70,30 @@ pub unsafe fn try_from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> Result<
     Ok(unsafe { core::slice::from_raw_parts_mut(data, len) })
 }
 
+/// The wrapper of [`core::slice::from_raw_parts`] which panics if the passed pointer is either
+/// null or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety requirements of [`core::slice::from_raw_parts`] except the
+/// alignment and null requirements.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::slice;
+/// use aligned::Error;
+///
+/// let x = 3;
+/// let s = unsafe { slice::from_raw_parts(&x, 1) };
+///
+/// assert_eq!(s, [3]);
+/// ```
+pub unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_from_raw_parts(data, len).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::slice::from_raw_parts`] which may return an error if the passed pointer
 /// is either null or not aligned.
 ///
