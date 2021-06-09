@@ -703,6 +703,31 @@ pub unsafe fn try_replace<T>(dst: *mut T, src: T) -> Result<T> {
     Ok(unsafe { core::ptr::replace(dst, src) })
 }
 
+/// The wrapper of [`core::ptr::swap`] which panics unless the passed pointers are aligned and not
+/// null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+/// let mut y = 4;
+/// unsafe { ptr::swap(&mut x, &mut y) };
+/// assert_eq!(x, 4);
+/// assert_eq!(y, 3);
+/// ```
+pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_swap(x, y).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::swap`] which returns an error unless the passed pointers are
 /// aligned and not null.
 ///
