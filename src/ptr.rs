@@ -1,6 +1,6 @@
 //! A module containing functions defined in [`core::ptr`] with null and alignment checks.
 
-use crate::is_aligned;
+use crate::return_error_on_null_or_misaligned;
 use crate::Error;
 use crate::ERR_MSG;
 
@@ -61,14 +61,10 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 /// assert_eq!(unsafe { ptr::try_get(p) }, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { *p })
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(p)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    Ok(unsafe { *p })
 }
 
 /// The wrapper of `&mut *p` which panics if `p` is either null or not aligned.
@@ -138,14 +134,10 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { &mut *p })
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(p)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    Ok(unsafe { &mut *p })
 }
 
 /// The wrapper of `&*p` which panics if `p` is either null or not aligned.
@@ -209,14 +201,10 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { &*p })
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(p)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    Ok(unsafe { &*p })
 }
 
 /// The wrapper of [`core::ptr::read`] which panics if the passed pointer is either null or not
@@ -279,14 +267,9 @@ pub unsafe fn read<T>(p: *const T) -> T {
 /// assert_eq!(unsafe { ptr::try_read(p) }, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        Ok(unsafe { p.read() })
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(p)?;
+
+    Ok(unsafe { p.read() })
 }
 
 /// The wrapper of [`core::ptr::write`] which panics if the passed pointer is either null or not
@@ -356,13 +339,9 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
 pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
-    if p.is_null() {
-        Err(Error::Null)
-    } else if is_aligned(p) {
-        // SAFETY: The caller must uphold the all safety rules.
-        unsafe { p.write(v) };
-        Ok(())
-    } else {
-        Err(Error::NotAligned)
-    }
+    return_error_on_null_or_misaligned(p)?;
+
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { p.write(v) };
+    Ok(())
 }
