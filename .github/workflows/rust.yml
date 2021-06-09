@@ -35,6 +35,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: -- -D clippy::pedantic -D clippy::all
 
+  doc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build the documentation for testing
+        run: cargo doc
+
   build:
 
     runs-on: ubuntu-latest
