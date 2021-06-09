@@ -13,7 +13,7 @@ use crate::ERR_MSG;
 ///
 /// # Panics
 ///
-/// This method panics if `p` is either null or not aligned correctly.
+/// This function panics if `p` is either null or not aligned correctly.
 ///
 /// # Examples
 ///
@@ -39,7 +39,7 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
@@ -76,7 +76,7 @@ pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T> {
 ///
 /// # Panics
 ///
-/// This method panics if `p` is either null or not aligned correctly.
+/// This function panics if `p` is either null or not aligned correctly.
 ///
 /// # Examples
 ///
@@ -103,7 +103,7 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
@@ -149,7 +149,7 @@ pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T> {
 ///
 /// # Panics
 ///
-/// This method panics if `p` is either null or not aligned correctly.
+/// This function panics if `p` is either null or not aligned correctly.
 ///
 /// # Examples
 ///
@@ -175,7 +175,7 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
@@ -217,7 +217,7 @@ pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T> {
 ///
 /// # Panics
 ///
-/// This method panics if `p` is either null or not aligned correctly.
+/// This function panics if `p` is either null or not aligned correctly.
 ///
 /// # Examples
 ///
@@ -244,7 +244,7 @@ pub unsafe fn read<T>(p: *const T) -> T {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
@@ -282,7 +282,7 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T> {
 ///
 /// # Panics
 ///
-/// This method panics if `p` is either null or not aligned correctly.
+/// This function panics if `p` is either null or not aligned correctly.
 ///
 /// # Examples
 ///
@@ -312,7 +312,7 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - `p` is null.
 /// - [`Error::NotAligned`] - `p` is not aligned correctly.
@@ -384,7 +384,7 @@ pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
 ///
 /// # Errors
 ///
-/// This method may return an error:
+/// This function may return an error:
 ///
 /// - [`Error::Null`] - Either `src` or `dst` is null.
 /// - [`Error::NotAligned`] - Either `src` or `dst` is not aligned correctly.
