@@ -4,7 +4,8 @@ use crate::is_aligned;
 use crate::Error;
 use crate::ERR_MSG;
 
-/// Creates a mutable reference to a slice with [`core::slice::from_raw_parts_mut`].
+/// The wrapper of [`core::slice::from_raw_parts_mut`] which panics if the passed pointer is either
+/// null or not aligned.
 ///
 /// # Safety
 ///
@@ -27,7 +28,8 @@ pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T]
     r.expect(ERR_MSG)
 }
 
-/// Creates a mutable reference to a slice with [`core::slice::from_raw_parts_mut`]
+/// The wrapper of [`core::slice::from_raw_parts_mut`] which may return an error if the passed
+/// pointer is either null or not aligned.
 ///
 /// # Safety
 ///

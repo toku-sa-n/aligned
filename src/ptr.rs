@@ -4,7 +4,7 @@ use crate::is_aligned;
 use crate::Error;
 use crate::ERR_MSG;
 
-/// Gets a value the pointer `p` points by dereferencing it.
+/// The wrapper of `*p` which panics if `p` is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -30,7 +30,7 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
     unsafe { try_get(p).expect(ERR_MSG) }
 }
 
-/// Gets a value the pointer `p` points by dereferencing it.
+/// The wrapper of `*p` which returns an error if the pointer is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -71,7 +71,7 @@ pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T, Error> {
     }
 }
 
-/// Converts a pointer to a mutable reference.
+/// The wrapper of `&mut *p` which panics if `p` is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -98,7 +98,7 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
     unsafe { try_as_mut(p).expect(ERR_MSG) }
 }
 
-/// Converts a pointer to a mutable reference.
+/// The wrapper of `&mut *p` which may return an error if `p` is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -148,7 +148,7 @@ pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T, Error> {
     }
 }
 
-/// Converts a pointer to an immutable reference.
+/// The wrapper of `&*p` which panics if `p` is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -174,7 +174,7 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
     unsafe { try_as_ref(p).expect(ERR_MSG) }
 }
 
-/// Converts a pointer to an immutable reference.
+/// The wrapper of `&*p` which may return an error if `p` is either null or not aligned.
 ///
 /// # Safety
 ///
@@ -219,7 +219,8 @@ pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T, Error> {
     }
 }
 
-/// Reads a value the pointer `p` points with [`core::ptr::read`].
+/// The wrapper of [`core::ptr::read`] which panics if the passed pointer is either null or not
+/// aligned.
 ///
 /// # Safety
 ///
@@ -245,7 +246,8 @@ pub unsafe fn read<T>(p: *const T) -> T {
     unsafe { try_read(p).expect(ERR_MSG) }
 }
 
-/// Reads a value the pointer `p` points with [`core::ptr::read`].
+/// The wrapper of [`core::ptr::read`] which may return an error if the passed pointer is either
+/// null or not null.
 ///
 /// # Safety
 ///
@@ -287,7 +289,8 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T, Error> {
     }
 }
 
-/// Writes a value the pointer `p` points with [`core::ptr::write`].
+/// The wrapper of [`core::ptr::write`] which panics if the passed pointer is either null or not
+/// aligned.
 ///
 /// # Safety
 ///
@@ -316,7 +319,8 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
     unsafe { try_write(p, v).expect(ERR_MSG) }
 }
 
-/// Writes a value the pointer `p` points with [`core::ptr::write`].
+/// The wrapper of [`core::ptr::write`] which may return an error if the passed pointer is either
+/// null or not aligned.
 ///
 /// # Safety
 ///
