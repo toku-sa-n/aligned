@@ -346,6 +346,34 @@ pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<(), Error> {
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::copy`] which panics unless the passed pointers are aligned and not
+/// null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::copy`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use core::mem::MaybeUninit;
+///
+/// let x = 3;
+/// let src = &x as *const i32;
+/// let mut y = MaybeUninit::uninit();
+/// let dst = y.as_mut_ptr();
+///
+/// unsafe { ptr::copy(src, dst, 1) };
+/// let y = unsafe { y.assume_init() };
+/// assert_eq!(y, 3);
+/// ```
+pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
+    // SAFETY: The caller must uphold the all safety rules.
+    unsafe { try_copy(src, dst, count).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::copy`] which may return an error unless the passed pointers are
 /// aligned and not null.
 ///
