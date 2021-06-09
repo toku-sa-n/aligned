@@ -771,3 +771,49 @@ pub unsafe fn try_swap<T>(x: *mut T, y: *mut T) -> Result<()> {
     unsafe { core::ptr::swap(x, y) };
     Ok(())
 }
+
+/// The wrapper of [`core::ptr::swap_nonoverlapping`] which returns an error unless the passed
+/// pointers are aligned and not null.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::swap_nonoverlapping`] excpet
+/// the alignment and null rules.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`crate::Error::Null`] - Either `x` or `y` is null.
+/// - [`crate::Error::NotAligned`] - Either `x` or `y` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = [1, 2, 3];
+/// let mut y = [4, 5, 6];
+///
+/// let r = unsafe { ptr::try_swap_nonoverlapping(x.as_mut_ptr(), y.as_mut_ptr(), 3) };
+/// assert!(r.is_ok());
+/// assert_eq!(x, [4, 5, 6]);
+/// assert_eq!(y, [1, 2, 3]);
+///
+/// let z: *mut i32 = core::ptr::null_mut();
+/// let r = unsafe { ptr::try_swap_nonoverlapping(x.as_mut_ptr(), z, 3) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let z = 0x1001 as *mut i32;
+/// let r = unsafe { ptr::try_swap_nonoverlapping(x.as_mut_ptr(), z, 3) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) -> Result<()> {
+    return_error_on_null_or_misaligned(x)?;
+    return_error_on_null_or_misaligned(y)?;
+
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { core::ptr::swap_nonoverlapping(x, y, count) };
+    Ok(())
+}
