@@ -9,6 +9,9 @@ pub mod slice;
 
 pub use error::Error;
 
+/// [`core::result::Result`] which may contain [`Error`].
+pub type Result<T> = core::result::Result<T, Error>;
+
 const ERR_MSG: &str = "Pointer is either null or not aligned.";
 
 fn is_aligned<T>(p: *const T) -> bool {
