@@ -4,5 +4,8 @@ version = "0.1.0"
 authors = ["Hiroki Tokunaga <tokusan441@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
-
-[dependencies]
+description = "Wrappers of functions defined in core::ptr and core::slice modules with alignment and null checks"
+repository = "https://github.com/toku-sa-n/aligned"
+readme = "README.md"
+categories = ["no-std"]
+keywords = ["no_std", "pointer"]
