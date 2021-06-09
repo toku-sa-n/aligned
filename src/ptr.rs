@@ -408,6 +408,29 @@ pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<()> {
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::write_bytes`] which panics if the passed pointer is null or not
+/// aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::write_bytes`] except the
+/// alignment and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+///
+/// let mut slice = [0_u8; 4];
+/// unsafe { ptr::write_bytes(slice.as_mut_ptr(), 0xff, 4) };
+///
+/// assert_eq!(slice, [0xff, 0xff, 0xff, 0xff]);
+/// ```
+pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_write_bytes(dst, val, count).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::write_bytes`] which returns an error if the passed pointer is null or not
 /// aligned.
 ///
