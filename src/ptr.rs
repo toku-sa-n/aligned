@@ -633,3 +633,72 @@ pub unsafe fn try_drop_in_place<T>(to_drop: *mut T) -> Result<()> {
     unsafe { core::ptr::drop_in_place(to_drop) };
     Ok(())
 }
+
+/// The wrapper of [`core::ptr::replace`] which panics if the passed pointer is either null or not
+/// aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+///
+/// let r = unsafe { ptr::replace(&mut x, 4) };
+/// assert_eq!(x, 4);
+/// assert_eq!(r, 3);
+/// ```
+pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_replace(dst, src).expect(ERR_MSG) }
+}
+
+/// The wrapper of [`core::ptr::replace`] which returns an error if the passed pointer is
+/// null or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::replace`] except the alignment
+/// and null rules.
+///
+/// # Errors
+///
+/// This function may return an error:
+///
+/// - [`Error::Null`] - `dst` is null.
+/// - [`Error::NotAligned`] - `dst` is not aligned correctly.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 3;
+///
+/// let r = unsafe { ptr::try_replace(&mut x, 4) };
+/// assert_eq!(x, 4);
+/// assert_eq!(r, Ok(3));
+///
+/// let dst: *mut i32 = core::ptr::null_mut();
+///
+/// let r = unsafe { ptr::try_replace(dst, 4) };
+/// assert_eq!(r, Err(Error::Null));
+///
+/// let dst = 0x1001 as *mut i32;
+///
+/// let r = unsafe { ptr::try_replace(dst, 4) };
+/// assert_eq!(r, Err(Error::NotAligned));
+/// ```
+pub unsafe fn try_replace<T>(dst: *mut T, src: T) -> Result<T> {
+    return_error_on_null_or_misaligned(dst)?;
+
+    // SAFETY: The caller must uphold the safety rules.
+    Ok(unsafe { core::ptr::replace(dst, src) })
+}
