@@ -18,7 +18,7 @@ use crate::ERR_MSG;
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let b = Box::new(3);
 /// let p = Box::into_raw(b);
@@ -47,8 +47,8 @@ pub unsafe fn get<T: Copy>(p: *const T) -> T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let b = Box::new(3);
 /// let p = Box::into_raw(b);
@@ -81,7 +81,7 @@ pub unsafe fn try_get<T: Copy>(p: *const T) -> Result<T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let mut x = 3;
 /// let p = &mut x as *mut i32;
@@ -111,8 +111,8 @@ pub unsafe fn as_mut<'a, T>(p: *mut T) -> &'a mut T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let p = &mut x as *mut i32;
@@ -154,7 +154,7 @@ pub unsafe fn try_as_mut<'a, T>(p: *mut T) -> Result<&'a mut T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let x = 3;
 /// let p = &x as *const i32;
@@ -183,8 +183,8 @@ pub unsafe fn as_ref<'a, T>(p: *const T) -> &'a T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let p = &x as *const i32;
@@ -222,7 +222,7 @@ pub unsafe fn try_as_ref<'a, T>(p: *const T) -> Result<&'a T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let x = 3;
 /// let p = &x as *const _;
@@ -252,8 +252,8 @@ pub unsafe fn read<T>(p: *const T) -> T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let p = &x as *const _;
@@ -283,7 +283,7 @@ pub unsafe fn try_read<T>(p: *const T) -> Result<T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let x = 3;
 /// let p = &x as *const _;
@@ -313,8 +313,8 @@ pub unsafe fn read_volatile<T>(p: *const T) -> T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let p = &x as *const _;
@@ -349,8 +349,8 @@ pub unsafe fn try_read_volatile<T>(p: *const T) -> Result<T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let p = &mut x as *mut i32;
@@ -382,8 +382,8 @@ pub unsafe fn write<T>(p: *mut T, v: T) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let p = &mut x as *mut i32;
@@ -419,7 +419,7 @@ pub unsafe fn try_write<T>(p: *mut T, v: T) -> Result<()> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let mut slice = [0_u8; 4];
 /// unsafe { ptr::write_bytes(slice.as_mut_ptr(), 0xff, 4) };
@@ -449,8 +449,8 @@ pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut slice = [0_u8; 4];
 ///
@@ -487,8 +487,8 @@ pub unsafe fn try_write_bytes<T>(dst: *mut T, val: u8, count: usize) -> Result<(
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 0;
 ///
@@ -519,8 +519,8 @@ pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 0;
 ///
@@ -556,7 +556,7 @@ pub unsafe fn try_write_volatile<T>(dst: *mut T, src: T) -> Result<()> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 /// use core::mem::MaybeUninit;
 ///
 /// let x = 3;
@@ -591,8 +591,8 @@ pub unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 /// use core::mem::MaybeUninit;
 ///
 /// let x = 3;
@@ -633,7 +633,7 @@ pub unsafe fn try_copy<T>(src: *const T, dst: *mut T, count: usize) -> Result<()
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 /// use core::mem::MaybeUninit;
 ///
 /// let x = 3;
@@ -668,8 +668,8 @@ pub unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 /// use core::mem::MaybeUninit;
 ///
 /// let x = 3;
@@ -714,8 +714,8 @@ pub unsafe fn try_copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usiz
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let b = Box::new(3);
 /// let p = Box::into_raw(b);
@@ -747,8 +747,8 @@ pub unsafe fn drop_in_place<T>(to_drop: *mut T) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let b = Box::new(3);
 /// let p = Box::into_raw(b);
@@ -782,8 +782,8 @@ pub unsafe fn try_drop_in_place<T>(to_drop: *mut T) -> Result<()> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 ///
@@ -814,8 +814,8 @@ pub unsafe fn replace<T>(dst: *mut T, src: T) -> T {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 ///
@@ -851,8 +851,8 @@ pub unsafe fn try_replace<T>(dst: *mut T, src: T) -> Result<T> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let mut y = 4;
@@ -883,8 +883,8 @@ pub unsafe fn swap<T>(x: *mut T, y: *mut T) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let mut y = 4;
@@ -920,7 +920,7 @@ pub unsafe fn try_swap<T>(x: *mut T, y: *mut T) -> Result<()> {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
+/// use aligned_ptr::ptr;
 ///
 /// let mut x = [1, 2, 3];
 /// let mut y = [4, 5, 6];
@@ -952,8 +952,8 @@ pub unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::ptr;
-/// use aligned::Error;
+/// use aligned_ptr::ptr;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = [1, 2, 3];
 /// let mut y = [4, 5, 6];

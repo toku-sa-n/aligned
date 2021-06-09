@@ -15,7 +15,7 @@ use crate::ERR_MSG;
 /// # Examples
 ///
 /// ```rust
-/// use aligned::slice;
+/// use aligned_ptr::slice;
 ///
 /// let mut x = 3;
 /// let s = unsafe { slice::from_raw_parts_mut(&mut x, 1) };
@@ -46,8 +46,8 @@ pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T]
 /// # Examples
 ///
 /// ```rust
-/// use aligned::slice;
-/// use aligned::Error;
+/// use aligned_ptr::slice;
+/// use aligned_ptr::Error;
 ///
 /// let mut x = 3;
 /// let s = unsafe { slice::try_from_raw_parts_mut(&mut x, 1) };
@@ -81,8 +81,8 @@ pub unsafe fn try_from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> Result<
 /// # Examples
 ///
 /// ```rust
-/// use aligned::slice;
-/// use aligned::Error;
+/// use aligned_ptr::slice;
+/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let s = unsafe { slice::from_raw_parts(&x, 1) };
@@ -112,8 +112,8 @@ pub unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
 /// # Examples
 ///
 /// ```rust
-/// use aligned::slice;
-/// use aligned::Error;
+/// use aligned_ptr::slice;
+/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let s = unsafe { slice::try_from_raw_parts(&x, 1) };
