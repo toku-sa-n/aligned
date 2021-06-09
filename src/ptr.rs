@@ -466,6 +466,7 @@ pub unsafe fn write_bytes<T>(dst: *mut T, val: u8, count: usize) {
 /// let r = unsafe { ptr::try_write_bytes(p, 0xff, 4) };
 /// assert_eq!(r, Err(Error::NotAligned));
 /// ```
+#[allow(clippy::shadow_unrelated)]
 pub unsafe fn try_write_bytes<T>(dst: *mut T, val: u8, count: usize) -> Result<()> {
     return_error_on_null_or_misaligned(dst)?;
 
