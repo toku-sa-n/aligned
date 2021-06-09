@@ -476,6 +476,31 @@ pub unsafe fn try_write_bytes<T>(dst: *mut T, val: u8, count: usize) -> Result<(
     Ok(())
 }
 
+/// The wrapper of [`core::ptr::write_volatile`] which panics if the passed pionter is either null
+/// or not aligned.
+///
+/// # Safety
+///
+/// The caller must follow the safety rules required by [`core::ptr::write_volatile`] except the
+/// null and alignment requirements.
+///
+/// # Examples
+///
+/// ```rust
+/// use aligned::ptr;
+/// use aligned::Error;
+///
+/// let mut x = 0;
+///
+/// let r = unsafe { ptr::try_write_volatile(&mut x, 3) };
+/// assert!(r.is_ok());
+/// assert_eq!(x, 3);
+/// ```
+pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
+    // SAFETY: The caller must uphold the safety requirements.
+    unsafe { try_write_volatile(dst, src).expect(ERR_MSG) }
+}
+
 /// The wrapper of [`core::ptr::write_volatile`] which returns an error if the passed pointer is
 /// either null or not aligned.
 ///
