@@ -82,7 +82,6 @@ pub unsafe fn try_from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> Result<
 ///
 /// ```rust
 /// use aligned_ptr::slice;
-/// use aligned_ptr::Error;
 ///
 /// let x = 3;
 /// let s = unsafe { slice::from_raw_parts(&x, 1) };
